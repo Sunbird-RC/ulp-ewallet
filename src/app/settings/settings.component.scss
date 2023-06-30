@@ -1,0 +1,33 @@
+.language-btn {
+  width: 12%;
+  background: none;
+  border: none;
+  padding-top: 0;
+}
+.fs-26 {
+  font-size: 26px;
+}
+select.form-control:focus {
+  border: none;
+  outline: 0;
+  box-shadow: none;
+}
+.language-bx {
+  border: 1px solid var(--primaryColor) !important;
+  padding: 5px 30px;
+  border-radius: 7px;
+  color: var(--primaryColor);
+  cursor: pointer;
+  background: var(--cardBackground);
+}
+
+.language-bx:focus, .language-bx:hover {
+  background: var(--primaryColor);
+  color: white;
+  opacity: 0.8;
+}
+
+.selected-box {
+  background: var(--primaryColor);
+  color: var(--cardBackground);
+}

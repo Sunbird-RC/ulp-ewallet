@@ -1,0 +1,22 @@
+.toolbar {
+  cursor: pointer;
+}
+
+.tab.active {
+  color: #3772ff;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  min-width: 50px;
+}
+.tab-label {
+  margin-top: 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}

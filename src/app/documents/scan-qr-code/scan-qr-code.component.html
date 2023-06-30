@@ -1,0 +1,52 @@
+<div class="pb-200">
+
+   <div class="mt-4">
+    <div>
+        <span class="ml-3 float-left">
+          <i routerLink="" class="fas fa-arrow-left mr-2" aria-hidden="true"></i>
+        </span>
+      </div>
+    
+      <div class="text-center pb-0 d-flex flex-justify-center">
+        <div>
+          <img src="assets/images/elocker-logo.png" class="img-fluid" alt="..." />
+        </div>
+    
+        <!-- <div class="text-center">
+          <h5 class="card-title fs-14 font-600 text-left">
+            <span class="text-gray-0 fs-12">DEPARTMENT OF</span> <br />
+            <span class="fs-16"> Basic Education</span><br />
+            <span class="text-orange fs-10">GOVERNMENT OF UTTAR PRADESH</span>
+          </h5>
+        </div> -->
+      </div>
+   </div>
+
+    <img src="assets/images/camera.png" *ngIf="!isScanCompleted" alt="" class="img-center">
+<h4 class="text-align fs-20">{{'SCAN_QR_CODE'|translate}}</h4>
+
+<div class="scanner" *ngIf="!isScanCompleted">
+    <quar-scanner (scanSuccess)="scanSuccessHandler($event)" (scanError)="onError($event)"></quar-scanner>
+</div>
+<div class="text-center mt-5" *ngIf="false">
+    <img src="assets/images/flash.png" alt="" class="pr-4">
+    <img src="assets/images/frontcamera.png" alt="">
+</div>
+<div class="scan-result" *ngIf="loader">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border">
+            <span class="sr-only">{{'LOADING'|translate}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="h-100 d-flex align-items-center justify-content-center flex-column" *ngIf="invalidQRCode">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">{{'Invalid_QR-Code' | translate}}</h4>
+        <p>Please scan valid QR Code</p>
+    </div>
+    <div>
+        <button type="button" class="btn btn-secondary" (click)="scanAgain()">{{'RETRY_SCAN' | translate}}</button>
+    </div>
+</div>
+</div>

@@ -1,0 +1,24 @@
+.title {
+  font-weight: 500;
+  font-size: 20px;
+  margin-top: 40px;
+}
+.sub-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #373737;
+  margin-top: 40px;
+}
+th{
+  text-align: center;
+  color: #ffffff;
+  background: var(--secondaryColor);
+  padding: 7px;
+  border: none;
+}
+td{
+  padding: 7px;
+}

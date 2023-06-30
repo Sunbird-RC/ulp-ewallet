@@ -1,0 +1,20 @@
+{
+    "/registry/api/v1": {
+        "target": "https://ulp-sbrc.uniteframework.io",
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "secure": false
+    },
+    "/registry/api": {
+        "target": "https://ulp-sbrc.uniteframework.io",
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "secure": false
+    },
+    "/registry/api/docs": {
+        "target": "https://ulp-sbrc.uniteframework.io",
+        "changeOrigin": true,
+        "logLevel": "debug",
+        "secure": false
+    }
+}

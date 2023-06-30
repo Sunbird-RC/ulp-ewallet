@@ -1,0 +1,22 @@
+.img-mb {
+    margin-top: 8px;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.bg-header {
+    background: var(--cardBackground) !important;
+}
+.btn-rounded {
+    border-radius: 10rem !important;
+    background-color: #fff;
+}
+
+.img-mb{
+    height: 505px;
+    overflow: hidden;
+}
