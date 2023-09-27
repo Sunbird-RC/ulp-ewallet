@@ -1,0 +1,33 @@
+dl {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border: solid 1px #2f2f2f;
+    border-radius: 20px;
+    text-align: left;
+}
+
+dt {
+    font-size: 12px;
+    color: #8a8686;
+    font-weight: 300;
+    padding-top: 10px;
+}
+dd {
+    font-size: 15px;
+    border-bottom: solid 1px #2f2f2f;
+    padding-bottom: 10px;
+    font-weight: 500;
+}
+dd:last-child {
+    border-bottom: none;
+}
+.text-center {
+    text-align: center;
+}
+.text-inherit {
+    text-transform: inherit !important;
+}
+.fs-20 {
+    font-size: 20px;
+}

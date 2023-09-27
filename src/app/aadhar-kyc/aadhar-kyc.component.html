@@ -1,0 +1,61 @@
+<div class="container text-center pb-0 mt-3 wallet">
+    <app-global-header [showBackground]="true" [showTitle]="true" [showUsername]="true" [status]="false"></app-global-header>
+</div>
+
+<div class="pb-100">
+    <div class="container">
+        <div class="fs-16 fw-400 text-center text-black-grey">
+            {{'PLEASE_COMPLETE_YOUR_AADHAR_KYC' | translate}}
+        </div>
+        <ng-container *ngIf="!showForm">
+            <div class="flex-center mt-5">
+                <button type="button" class="login-btn mt-4 fs-14 fw-600" (click)="startKYC()">
+                    {{'START_AADHAAR_KYC' | translate}}&nbsp;&nbsp;
+                    <i class="fa fa-solid fa-arrow-right"></i>
+                </button>
+
+            </div>
+        </ng-container>
+        <ng-container *ngIf="showForm">
+            <form (ngSubmit)="getOTP()">
+                <div class="pt-3 flex-center">
+                    <div class="flex-center w-400">
+                        <div class="w-90">
+                            <div class="label-float w-100">
+                                <input type="text" placeholder="" [formControl]="aadhaarFormControl" autofocus="true" minlength="12" maxlength="12" />
+                                <label>{{'ENTER_AADHAAR' | translate}}</label>
+                            </div>
+                            <p class="text-danger fs-14 pt-2" *ngIf="aadhaarFormControl?.invalid && aadhaarFormControl?.touched">
+                                {{'ENTER_VALID_AADHAAR_NUMBER' | translate}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-center">
+                    <button type="submit" class="login-btn mt-4 fs-14 fw-600"
+                        [ngClass]="{'disable-btn': !aadhaarFormControl?.valid || isGetOTPClicked}" [disabled]="!aadhaarFormControl?.valid || isGetOTPClicked">
+                        {{'GET_OTP' | translate}}</button>
+                </div>
+            </form>
+            <form *ngIf="isGetOTPClicked" (ngSubmit)="submitOTP()">
+                <div class="pt-3 flex-center">
+                    <div class="flex-center w-400">
+                        <div class="w-90">
+                            <div class="label-float w-100">
+                                <input type="text" [formControl]="otpFormControl" minlength="6" maxlength="6" />
+                                <label>{{'ENTER_OTP' | translate}}</label>
+                            </div>
+                            <p class="text-danger fs-14 pt-2" *ngIf="otpFormControl?.invalid && otpFormControl?.touched">
+                                {{'INVALID_OTP' | translate}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-center">
+                    <button type="button" class="login-btn mt-4 fs-14 fw-600" [disabled]="!otpFormControl?.valid"
+                        [ngClass]="{'disable-btn': !otpFormControl?.valid}" (click)="submitOTP()"> {{'SUBMIT' | translate}}</button>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+</div>

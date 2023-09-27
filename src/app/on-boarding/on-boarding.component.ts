@@ -30,13 +30,23 @@ export class OnBoardingComponent implements OnInit, AfterViewInit {
     this.baseUrl = this.authConfigService.config.bffUrl;
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     // if (this.authService.isLoggedIn) {
     //   this.router.navigate(['/home']);
     // }
 
-    if (this.keycloakService.isLoggedIn()) {
-      this.router.navigate(['/home']);
+    try {
+      const isLoggedIn = await this.keycloakService.isLoggedIn();
+      if (isLoggedIn && !this.keycloakService.isTokenExpired()) {
+        this.router.navigate(['/home']);
+      } else {
+        localStorage.clear();
+        this.keycloakService.clearToken();
+      }
+    } catch(error) {
+      console.log("error==>", error);
+      localStorage.clear();
+      this.keycloakService.clearToken();
     }
   }
 

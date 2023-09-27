@@ -1,0 +1,118 @@
+<div class="container mb-100">
+    <ng-container *ngIf="!showCorrectionRequest">
+        <h2 class="fs-18 font-600 text-underline mt-3 text-center">{{'RAISE_GRIEVANCE_FOR_CREDENTIALS' | translate}}
+        </h2>
+        <div class="fs-14 text-black-grey py-2 text-center ">{{'CLAIM_HEADING' | translate}}</div>
+        <div class="bg-grey-shade1 my-2">
+            <div class="d-flex p-2 justify-content-center align-items-center cursor-pointer" [routerLink]="['/raise-claims']">
+                <img src="assets/images/raise-claim.png" alt="">
+                <div class="font-600 fs-16 text-grey-shade3 text-underline">
+                    {{'RAISE_CLAIMS' | translate}}
+                </div>
+            </div>
+        </div>
+        <div class="py-3 d-flex align-items-center hr-line">
+            <hr class="flex-grow-1" />
+            <div class="text-secondary px-3">{{'OR' | translate}}</div>
+            <hr class="flex-grow-1" />
+        </div>
+
+        <h3 class="fs-16 font-600 text-center text-underline">{{'REQUEST_CORRECTION_IN_ISSUED_CREDENTIALS' | translate}}
+        </h3>
+        <div class="mb-3 col-sm-12 col-md-6 col-lg-4 col-xs-2" *ngFor="let item of credentialList">
+            <div class="card" (click)="selectCredential(item)">
+                <div class="card-body">
+                    <div class="card-image">
+                        <img [src]="item?.logoUrl ? item.logoUrl : 'assets/images/logo.svg'" />
+                    </div>
+                    <div class="card-intro-info">
+                        <div class="mb-2 fs-14">
+                            {{ item?.credentialSubject?.orgName || "Enrollment Credentials"}}
+                        </div>
+                        <div class="text-grey fs-12">
+                            {{ item | replacePlaceholder }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h6 class="text-center mt-5" *ngIf="!credentialList?.length && !isLoading">{{'NO_RECORDS_FOUND' | translate}}</h6>
+
+        <div class="d-flex justify-content-center" *ngIf="isLoading">
+            <div class="spinner-border" style="width: 2rem; height: 2rem;" role="status">
+                <span class="sr-only">{{'LOADING'|translate}}</span>
+            </div>
+        </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="showCorrectionRequest">
+        <h2 class="fs-20 font-600 text-underline mt-3 text-center">{{'REQUEST_CORRECTION_IN_ISSUED_CREDENTIALS' |
+            translate}}</h2>
+        <div class="mb-3 col-sm-12 col-md-6 col-lg-4 col-xs-2">
+            <div class="card" *ngIf="selectedCredential">
+                <div class="card-body">
+                    <div class="card-image">
+                        <img
+                            [src]="selectedCredential?.logoUrl ? selectedCredential.logoUrl : 'assets/images/logo.svg'" />
+                    </div>
+                    <div class="card-intro-info">
+                        <div class="mb-2 fs-14">
+                            {{ selectedCredential?.credentialSubject?.orgName}}
+                        </div>
+                        <div class="text-grey fs-12">
+                            {{ selectedCredential | replacePlaceholder }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-center">“ {{'ADD_DATA_FOR_CORRECTION' | translate}} “</p>
+        <div class="subject-box">
+            <div class="row">
+                <span class="brown-shade-1 font-400 col-2 text-right p-0">{{'NAME' | translate}}:</span>
+                <span class="col-10 text-left font-600">{{currentUser?.name}}</span>
+            </div>
+            <div class="row">
+                <span class="brown-shade-1 font-400 col-2 text-right p-0">{{'SUBJECT' | translate}}:</span>
+                <span class="col-10 text-left font-600">
+                    {{'CORRECTION_OF_CLASS' | translate: {value1:
+                    selectedCredential?.credentialSubject?.unitAssociatedWith} }}
+                    <!-- {{'PLEASE_ENTER_VALID' | translate : {value1: field.label} }} -->
+                </span>
+            </div>
+        </div>
+        <textarea name="" id="" placeholder="{{'TYPE_HERE' | translate}}" rows="10"
+            [(ngModel)]="grievanceMessage"></textarea>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="btn btn-outline-danger mr-3" (click)="cancelCorrection()">
+                <i class="fa fa-close"></i>
+                {{'CANCEL' | translate}}
+            </button>
+            <button class="btn btn-outline-success" (click)="confirmCorrection()">
+                <i class="fa fa-solid fa-check"></i>
+                {{'CONFIRM' | translate}}
+            </button>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #successModal tabindex="-1" role="dialog" aria-labelledby="successModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="btn-close ml-auto" role="button" data-dismiss="modal" aria-label="Close"
+                (click)="closeModal()">
+                <i class="fa fa-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>“ {{'CORRECTION_REQUEST_SUCCESS' | translate : {value1:
+                selectedCredential?.credentialSubject?.unitAssociatedWith} }} “</p>
+            <div class="text-center">
+                <button class="btn btn-outline-primary text-center mt-3" (click)="closeModal()">{{'OK' |
+                    translate}}</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, InjectionToken } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
@@ -65,6 +65,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { config } from 'process';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 //form validations
@@ -108,8 +109,12 @@ export function constValidationMessage(err, field: FormlyFieldConfig) {
   return `should be equal to constant "${field.templateOptions.const}"`;
 }
 
+
+// Create custom Injection Token
+const ConfigDeps = new InjectionToken<(() => Function)[]>('configDeps');
+
 function initConfig(config: AppConfig) {
-  return () => config.load().then((res) => {console.log(res)})
+  return () => config.load().then((res) => { console.log(res) })
 }
 
 import ISO6391 from 'iso-639-1';
@@ -140,6 +145,17 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { MonthYearPickerComponent } from './month-year-picker/month-year-picker.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RegisterComponent } from './register/register.component';
+import { ReplacePlaceholderPipe } from './replace-placeholder.pipe';
+import { OpportuntiesComponent } from './opportunties_dynamic/opportunties.component';
+import { OpportunitieComponent } from './opportunitie/opportunitie.component';
+import { configurationFactory } from './configuration.factory';
+import { AadharKycComponent } from './aadhar-kyc/aadhar-kyc.component';
+import { AadhaarKycStatusComponent } from './aadhaar-kyc-status/aadhaar-kyc-status.component';
+import { AccountComponent } from './account/account.component';
+import { WalletWorkerComponent } from './wallet-worker/wallet-worker.component';
+import { WalletUiGetComponent } from './wallet-ui-get/wallet-ui-get.component';
+import { RaiseClaimsComponent } from './raise-claims/raise-claims.component';
+import { RequestCorrectionComponent } from './request-correction/request-correction.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +207,17 @@ import { RegisterComponent } from './register/register.component';
     PageNotFoundComponent,
     MonthYearPickerComponent,
     SettingsComponent,
-    RegisterComponent
+    RegisterComponent,
+    ReplacePlaceholderPipe,
+    OpportuntiesComponent,
+    OpportunitieComponent,
+    AadharKycComponent,
+    AadhaarKycStatusComponent,
+    AccountComponent,
+    WalletWorkerComponent,
+    WalletUiGetComponent,
+    RaiseClaimsComponent,
+    RequestCorrectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -202,15 +228,15 @@ import { RegisterComponent } from './register/register.component';
     ReactiveFormsModule,
     NgbModule,
     FormlyBootstrapModule,
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot(),
     KeycloakAngularModule,
     Bootstrap4FrameworkModule,
     AngularMultiSelectModule,
     NgSelectModule,
     DeviceDetectorModule.forRoot(),
-
     HttpClientModule,
     TranslateModule.forRoot(),
-
     WebcamModule,
     ColorPickerModule,
     QuarModule,
@@ -272,53 +298,35 @@ import { RegisterComponent } from './register/register.component';
   bootstrap: [AppComponent],
   providers: [
     AppConfig,
-    { provide: APP_INITIALIZER, useFactory: initConfig, deps: [AppConfig], multi: true },
     {
       provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
+      useFactory: configurationFactory,
       multi: true,
-      deps: [KeycloakService, AuthConfigService],
+      // ConfigDeps is now a dependency for configurationFactory
+      deps: [AppConfig, ConfigDeps]
+    },
+    {
+      provide: ConfigDeps,
+      // Use a factory that return an array of dependant functions to be executed
+      useFactory: (
+        http: HttpClient,
+        config: AuthConfigService,
+        keycloackService: KeycloakService,
+        translateService: TranslateService
+      ) => {
+        // Easy to add or remove dependencies
+        return [
+          initializeKeycloak(keycloackService, config),
+          initLang(http, translateService, config)
+        ];
+      },
+      deps: [HttpClient, AuthConfigService, KeycloakService, TranslateService]
     },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { floatLabel: 'always' } },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initLang,
-      deps: [HttpClient, TranslateService],
-      multi: true
-    },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ]
 })
 
 
 export class AppModule {
-  languages;
-  constructor(translate: TranslateService, authConfig: AuthConfigService) {
-
-    authConfig.getConfig().subscribe((config) => {
-      this.languages = config.languages;
-      let installedLanguages = [];
-
-      for (let i = 0; i < this.languages.length; i++) {
-        installedLanguages.push({
-          "code": this.languages[i],
-          "name": ISO6391.getNativeName(this.languages[i])
-        });
-      }
-
-      localStorage.setItem('languages', JSON.stringify(installedLanguages));
-      translate.addLangs(this.languages);
-
-      if (localStorage.getItem('setLanguage') && this.languages.includes(localStorage.getItem('setLanguage'))) {
-        translate.use(localStorage.getItem('setLanguage'));
-      } else {
-        const browserLang = translate.getBrowserLang();
-        let lang = this.languages.includes(browserLang) ? browserLang : 'en';
-        translate.use(lang);
-        localStorage.setItem('setLanguage', lang);
-      }
-    });
-
-  }
 }
-

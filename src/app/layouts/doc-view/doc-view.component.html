@@ -6,23 +6,14 @@
   </div>
 
   <div class="text-center pb-0 d-flex flex-justify-center" *ngIf="!credential?.credentialSubject?.school_name">
-    <div>
-      <img src="assets/images/elocker-logo.png" class="img-fluid" alt="..." />
-    </div>
+      <img src="assets/images/header.png" class="img-fluid" alt="..." />
 
-    <!-- <div class="text-center">
-      <h5 class="card-title fs-14 font-600 text-left">
-        <span class="text-gray-0 fs-12">DEPARTMENT OF</span> <br />
-        <span class="fs-16"> Basic Education</span><br />
-        <span class="text-orange fs-10">GOVERNMENT OF UTTAR PRADESH</span>
-      </h5>
-    </div> -->
   </div>
 
 
   <div *ngIf="credential?.credentialSubject?.school_name">
     <div class="flex-center">
-      <img src="assets/images/elocker-logo.png" alt="header-round">
+      <img src="assets/images/header.png" alt="header-round">
     </div>
     <div class="text-center fw-700 fs-14 ps-4 pt-2">
       {{credential?.credentialSubject?.school_name}}
@@ -55,18 +46,18 @@
 
   <div class="pt-2">
     <div class="text-center mt-4 d-flex justify-content-space-evenly text-center" *ngIf="docUrl">
-      <div class="p-2">
-        <img src="assets/images/download.png" (click)="downloadCertificate()"
+      <div class="p-2 text-center">
+        <img src="assets/images/download.svg" (click)="downloadCertificate()"
           (click)="raiseInteractEvent('download-pdf')">
         <div>{{'DOWNLOAD_PDF' | translate}}</div>
       </div>
-      <div class="p-2" *ngIf="canShareFile">
-        <img src="assets/images/share.png" (click)="shareFile()" class="pr-3"
+      <div class="p-2 text-center" *ngIf="canShareFile">
+        <img src="assets/images/share.svg" (click)="shareFile()"
           (click)="raiseInteractEvent('share-file')">
         <div>{{'SHARE' | translate}}</div>
       </div>
       <div class="p-2 d-none">
-        <img src="assets/images/download.png" (click)="downloadCertificate(true)"
+        <img src="assets/images/download.svg" (click)="downloadCertificate(true)"
           (click)="raiseInteractEvent('download-json')">
         <div>{{'DOWNLOAD_JSON' | translate}}</div>
       </div>

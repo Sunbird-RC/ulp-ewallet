@@ -44,7 +44,7 @@ export class DocViewComponent implements OnInit {
         // this.baseUrl = environment.baseUrl;
         this.baseUrl = this.authConfigService.config.bffUrl;
         const navigation = this.router.getCurrentNavigation();
-        this.credential = {...navigation.extras.state};
+        this.credential = { ...navigation.extras.state };
         this.canGoBack = !!(this.router.getCurrentNavigation()?.previousNavigation);
 
         if (!this.credential) {
@@ -58,10 +58,10 @@ export class DocViewComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.credential?.credential_schema) {
-            this.schemaId = this.credential.schemaId;
+            this.schemaId = this.credential.credentialSchemaId;
             this.getTemplate(this.schemaId).subscribe((res) => {
-                this.templateId = res?.id;
-                this.getPDF(res?.template);
+                this.templateId = res?.templateId;
+                this.getPDF(this.credential.id, this.templateId);
             });
         } else {
             this.router.navigate(['/home']);
@@ -70,7 +70,7 @@ export class DocViewComponent implements OnInit {
     }
 
     getTemplate(id: string): Observable<any> {
-        return this.generalService.getData(`${this.baseUrl}/v1/sso/student/credentials/rendertemplateschema/${id}`, true).pipe(
+        return this.generalService.postData(`${this.baseUrl}/v1/credential/schema/template/list`, { schema_id: id }).pipe(
             map((res: any) => {
                 if (res.result.length > 1) {
                     const selectedLangKey = localStorage.getItem('setLanguage');
@@ -99,22 +99,21 @@ export class DocViewComponent implements OnInit {
         )
     }
 
-    getPDF(template) {
+    getPDF(crdentialId: string, templateId: string) {
         let headerOptions = new HttpHeaders({
             'Accept': 'application/pdf'
         });
         let requestOptions = { headers: headerOptions, responseType: 'blob' as 'json' };
-        const credential_schema = this.credential.credential_schema;
-        delete this.credential.credential_schema;
-        delete this.credential.schemaId;
+        // const credential_schema = this.credential.credential_schema;
+        // const currentCredential = { ...this.credential };
+        // delete currentCredential.credential_schema;
+        // delete currentCredential.schemaId;
         const request = {
-            credential: this.credential,
-            schema: credential_schema,
-            template: template,
-            output: "HTML"
+            credentialid: crdentialId,
+            templateid: templateId,
         }
         // delete request.credential.credentialSubject;
-        this.http.post(`${this.baseUrl}/v1/sso/student/credentials/render`, request, requestOptions).pipe(map((data: any) => {
+        this.http.post(`${this.baseUrl}/v1/credentials/render`, request, requestOptions).pipe(map((data: any) => {
             this.blob = new Blob([data], {
                 type: 'application/pdf' // must match the Accept type
             });
@@ -136,11 +135,11 @@ export class DocViewComponent implements OnInit {
             const url = window.URL.createObjectURL(blob);
             link = document.createElement("a");
             link.href = url;
-            link.download = `${this.authService.currentUser?.student_name}_certificate.json`.replace(/\s+/g, '_');;
+            link.download = `${this.authService.currentUser?.name}_certificate.json`.replace(/\s+/g, '_');;
         } else {
             link = document.createElement("a");
             link.href = this.docUrl;
-            link.download = `${this.authService.currentUser?.student_name}_certificate.pdf`.replace(/\s+/g, '_');;
+            link.download = `${this.authService.currentUser?.name}_certificate.pdf`.replace(/\s+/g, '_');;
         }
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
@@ -153,7 +152,7 @@ export class DocViewComponent implements OnInit {
         const pdf = new File([this.blob], "certificate.pdf", { type: "application/pdf" });
         const shareData = {
             title: "Certificate",
-            text: "Enrollment certificate",
+            text: `${this.authService.currentUser.name}-${this.credential.credential_schema.name}`,
             files: [pdf]
         };
 
@@ -161,10 +160,11 @@ export class DocViewComponent implements OnInit {
             navigator.share(shareData).then((res: any) => {
                 console.log("File shared successfully!");
             }).catch((error: any) => {
-                this.toastMessage.error("", this.generalService.translateString('SHARED_OPERATION_FAILED'));
+                // this.toastMessage.error("", this.generalService.translateString('SHARED_OPERATION_FAILED'));
                 console.error("Shared operation failed!", error);
             })
         } else {
+            this.toastMessage.error("", this.generalService.translateString('SHARED_OPERATION_FAILED'));
             console.log("Share not supported");
         }
     }

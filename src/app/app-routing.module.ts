@@ -35,6 +35,14 @@ import { EkycComponent } from './ekyc/ekyc.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RegisterComponent } from './register/register.component';
+import { OpportuntiesComponent } from './opportunties_dynamic/opportunties.component';
+import { OpportunitieComponent } from './opportunitie/opportunitie.component';
+import { AadharKycComponent } from './aadhar-kyc/aadhar-kyc.component';
+import { AccountComponent } from './account/account.component';
+import { WalletWorkerComponent } from './wallet-worker/wallet-worker.component';
+import { WalletUiGetComponent } from './wallet-ui-get/wallet-ui-get.component';
+import { RaiseClaimsComponent } from './raise-claims/raise-claims.component';
+import { RequestCorrectionComponent } from './request-correction/request-correction.component';
 
 const routes: Routes = [
   {
@@ -69,6 +77,16 @@ const routes: Routes = [
     }
   },
   {
+    path: 'opportunties',
+    component: OpportuntiesComponent,
+    data: {
+      showToolbar: false,
+      telemetry: {
+        env: 'opportunities', pageid: 'opportunities', type: 'edit', subtype: 'scroll'
+      }
+    }
+  },
+  {
     path: 'settings',
     component: SettingsComponent,
     data: {
@@ -91,12 +109,34 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'search-certificates',
+    path: 'opportunities',
+    component: OpportunitieComponent,
+    data: {
+      showToolbar: true,
+      telemetry: {
+        env: 'opportunities', pageid: 'home', type: 'list', subtype: 'scroll'
+      },
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'aadhaar-kyc',
+    component: AadharKycComponent,
+    data: {
+      showToolbar: true,
+      telemetry: {
+        env: 'home', pageid: 'home', type: 'list', subtype: 'scroll'
+      },
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'search-certificates/:schemaId',
     component: SearchCertificatesComponent,
     data: {
       showToolbar: true,
       telemetry: {
-        env: 'search', pageid: 'search', type: 'list', subtype: 'scroll'
+        env: 'home', pageid: 'search', type: 'list', subtype: 'scroll'
       },
     },
     canActivate: [AuthGuard]
@@ -107,7 +147,7 @@ const routes: Routes = [
     data: {
       showToolbar: false,
       telemetry: {
-        env: 'doc-view', pageid: 'doc-view', type: 'view', subtype: 'scroll'
+        env: 'home', pageid: 'doc-view', type: 'view', subtype: 'scroll'
       }
     },
     canActivate: [AuthGuard]
@@ -118,7 +158,7 @@ const routes: Routes = [
     data: {
       showToolbar: true,
       telemetry: {
-        env: 'scan certificate', pageid: 'scan-code', type: 'view', subtype: 'scroll'
+        env: 'home', pageid: 'scan-code', type: 'view', subtype: 'scroll'
       }
     },
     canActivate: [AuthGuard]
@@ -129,10 +169,62 @@ const routes: Routes = [
     data: {
       showToolbar: false,
       telemetry: {
-        env: 'dashboard', pageid: 'sign-out', type: 'view', subtype: 'scroll'
+        env: 'settings', pageid: 'sign-out', type: 'view', subtype: 'scroll'
       }
     },
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'raise-claims',
+    component: RaiseClaimsComponent,
+    data: {
+      showToolbar: true,
+      telemetry: {
+        env: 'home', pageid: 'raise-claims', type: 'view', subtype: 'scroll'
+      }
+    },
+  },
+  {
+    path: 'request-correction',
+    component: RequestCorrectionComponent,
+    data: {
+      showToolbar: true,
+      telemetry: {
+        env: 'home', pageid: 'request-correction', type: 'view', subtype: 'scroll'
+      }
+    },
+  },
+  {
+    path: 'settings/account',
+    component: AccountComponent,
+    data: {
+      showToolbar: true,
+      telemetry: {
+        env: 'settings', pageid: 'account', type: 'view', subtype: 'scroll'
+      }
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'wallet-worker',
+    component: WalletWorkerComponent,
+    canActivate: [AuthGuard],
+    data: {
+      showToolbar: false,
+      telemetry: {
+        env: 'Wallet Worker', pageid: 'walletworker', type: 'view', subtype: 'scroll'
+      }
+    }
+  },
+  {
+    path: 'wallet-worker/wallet-ui-get',
+    component: WalletUiGetComponent,
+    data: {
+      showToolbar: false,
+      telemetry: {
+        env: 'Wallet Worker Get', pageid: 'walletworkerget', type: 'view', subtype: 'scroll'
+      }
+    }
   },
   {
     path: '**',

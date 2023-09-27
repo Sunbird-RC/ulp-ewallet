@@ -1,5 +1,5 @@
 <div class="pb-100">
-  <div class="container mt-20">
+  <div class="container mt-3">
     <app-global-header [showBackground]="true" [showTitle]="true" [showUsername]="true"></app-global-header>
     <div class="mb-4">
       <ul class="navbar-nav nav-tabs-line mb-2 mb-lg-0">
@@ -8,7 +8,7 @@
             <i class="fa fa-user float-left fs-26" aria-hidden="true"></i>
           </div>
           <div class="pl-10">
-            <div class="fs-16">{{ "ACCOUNT" | translate }}</div>
+            <div class="fs-16" [routerLink]="['/settings/account']" (click)="raiseInteractEvent('account-page-nav-btn')">{{ "ACCOUNT" | translate }}</div>
             <div class="fs-14 text-gray-100">
               {{ "PRIVACY_SECURITY_OR_NUMBER" | translate }}
             </div>
