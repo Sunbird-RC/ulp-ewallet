@@ -30,6 +30,7 @@
                             "src/favicon.ico",
                             "src/assets",
                             "src/manifest.webmanifest",
+                            "src/manifest.json",
                             {
                                 "glob": "**/*",
                                 "input": "node_modules/ngx-extended-pdf-viewer/assets/",
@@ -44,12 +45,13 @@
                         "styles": [
                             "src/styles.scss",
                             "src/mediaQuery.scss",
-                            "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "node_modules/ngx-toastr/toastr.css"
+                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                            "node_modules/ngx-toastr/toastr.css",
+                            "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"
                         ],
                         "scripts": [
-                            "./node_modules/jquery/dist/jquery.min.js",
-                            "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "node_modules/bootstrap/dist/js/bootstrap.min.js",
                             "node_modules/@project-sunbird/telemetry-sdk/index.js"
                         ]
                     },
@@ -88,7 +90,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "opensaber-rc-ui:build"
+                        "browserTarget": "opensaber-rc-ui:build",
+                        "hmr": false
                     },
                     "configurations": {
                         "production": {
@@ -112,7 +115,8 @@
                         "assets": [
                             "src/favicon.ico",
                             "src/assets",
-                            "src/manifest.webmanifest"
+                            "src/manifest.webmanifest",
+                            "src/manifest.json"
                         ],
                         "styles": [
                             "src/styles.scss"
